@@ -12,6 +12,7 @@ import AVFoundation
 class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPopoverPresentationControllerDelegate, PopOverSettingViewControllerDelegate {
 
     @IBOutlet weak var theSwitch: UISwitch!
+    
     @IBOutlet weak var detailImage: UIImageView!
     @IBOutlet weak var detailLabel: UILabel!
     // Display the image and label
@@ -30,23 +31,7 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
     var myUtterance = AVSpeechUtterance(string: "")
     
        
-    @IBAction func switchcontroll(sender: AnyObject) {
-        let photo = detailImage.image
-        let todoItemCreated = ToDoItem(imageName: photo, description: detailLabel.text!)
-        if theSwitch.on
-        {
-            finishList.append(todoItemCreated)
-            let index = toDoList.indexOf({ $0.imageName == photo })
-            print(index)
-            toDoList.removeAtIndex(index!)
-        }
-        else
-        {
-            toDoList.append(todoItemCreated)
-            let index = finishList.indexOf({ $0.imageName == photo })
-            finishList.removeAtIndex(index!)
-        }
-    }
+    
     
     @IBAction func onOffSwitch(sender: AnyObject) {
         let photo = detailImage.image
