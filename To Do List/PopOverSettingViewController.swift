@@ -29,6 +29,8 @@ class PopOverSettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Slider.value = speechSettings.floatForKey(valuekey)
+        valueLabel.text = "\(Slider.value)"
+        
         
         // Do any additional setup after loading the view.
     }
