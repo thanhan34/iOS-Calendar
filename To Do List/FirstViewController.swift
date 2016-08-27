@@ -13,27 +13,22 @@ var toDoList:[ToDoItem] = [ToDoItem]()
 class FirstViewController: UIViewController, UITableViewDelegate {
     
     
-    
+    var arraykey: String!
     
     @IBOutlet var toDoListTable: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         
-        //let photo = UIImage(named: "images.jpg")
+      /* if NSUserDefaults.standardUserDefaults().objectForKey(arraykey) != nil {
         
-        //let todoItemCreated = ToDoItem(imageName: photo, description: "Text to speech function tested")
-        //print(todoItemCreated)
-        //toDoList.append(todoItemCreated)
-        
-       // if NSUserDefaults.standardUserDefaults().objectForKey("ToDoItem") != nil {
-        
-         //  toDoList = NSUserDefaults.standardUserDefaults().objectForKey("ToDoItem") as! [ToDoItem]
-        
-        //}
+        //   toDoList = NSUserDefaults.standardUserDefaults().objectForKey(arraykey) as! [ToDoItem]
+            NSUserDefaults.standardUserDefaults().objectForKey(arraykey) as! [ToDoItem]
+        }
         
          //NSUserDefaults.standardUserDefaults().setObject(toDoList, forKey: "arraytodolist")
-        
+        */
     }
 
     override func didReceiveMemoryWarning() {
@@ -68,7 +63,9 @@ class FirstViewController: UIViewController, UITableViewDelegate {
             
             toDoList.removeAtIndex(indexPath.row)
             
-           // NSUserDefaults.standardUserDefaults().setObject(ToDoItem.self, forKey: "ToDoItem")
+           // NSUserDefaults.standardUserDefaults().setObject(toDoList, forKey: arraykey)
+            
+            //NSUserDefaults.standardUserDefaults().setObject(ToDoItem.self, forKey: arraykey)
            // NSUserDefaults.standardUserDefaults().setObject(ToDoItem.self, forKey: "arraytodolist")
             
             toDoListTable.reloadData()

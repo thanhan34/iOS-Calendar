@@ -37,5 +37,41 @@ class ToDoItem {
         self.description = description
     }
     */
-    
+  /*
+    init(coder aDecoder: NSCoder!){
+        self.title = aDecoder.decodeObjectForKey("Title") as! String
+        self.staff = aDecoder.decodeObjectForKey("Staff") as! String
+        self.location = aDecoder.decodeObjectForKey("Location") as! String
+        self.starts = aDecoder.decodeObjectForKey("Start") as! String
+        self.ends = aDecoder.decodeObjectForKey("End") as! String
+        self.rpeat = aDecoder.decodeObjectForKey("Repeat") as! String
+        self.imageName = aDecoder.decodeObjectForKey("FirstPhoto") as? UIImage
+        self.description = aDecoder.decodeObjectForKey("Description") as! String
+        self.secondPhoto = aDecoder.decodeObjectForKey("SecondPhoto") as? UIImage
+    }*/
+  /*  func initWithCoder(aDecoder: NSCoder) -> ToDoItem {
+        self.title = aDecoder.decodeObjectForKey("Title") as! String
+        self.staff = aDecoder.decodeObjectForKey("Staff") as! String
+        self.location = aDecoder.decodeObjectForKey("Location") as! String
+        self.starts = aDecoder.decodeObjectForKey("Start") as! String
+        self.ends = aDecoder.decodeObjectForKey("End") as! String
+        self.rpeat = aDecoder.decodeObjectForKey("Repeat") as! String
+        self.imageName = aDecoder.decodeObjectForKey("FirstPhoto") as? UIImage
+        self.description = aDecoder.decodeObjectForKey("Description") as! String
+        self.secondPhoto = aDecoder.decodeObjectForKey("SecondPhoto") as? UIImage
+        return self
+    }
+    func encodeWithCoder(aCoder: NSCoder!){
+        aCoder.encodeObject(title, forKey: "Title")
+        aCoder.encodeObject(staff, forKey: "Staff")
+        aCoder.encodeObject(location, forKey: "Location")
+        aCoder.encodeObject(starts, forKey: "Start")
+        aCoder.encodeObject(ends, forKey: "End")
+        aCoder.encodeObject(title, forKey: "Title")
+        aCoder.encodeObject(rpeat, forKey: "Repeat")
+        aCoder.encodeObject(imageName, forKey: "FirstPhoto")
+        aCoder.encodeObject(description, forKey: "Description")
+        aCoder.encodeObject(secondPhoto, forKey: "SecondPhoto")
+    }
+    */
 }

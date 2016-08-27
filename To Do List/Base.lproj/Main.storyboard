@@ -188,6 +188,13 @@
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dD1-Mf-MEe" customClass="CheckBox" customModule="To_Do_List" customModuleProvider="target">
+                                        <rect key="frame" x="27" y="676" width="46" height="30"/>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="checkBox:" destination="joa-ri-Pe1" eventType="touchUpInside" id="Y41-WB-DHf"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="lsy-X3-wQ2" firstAttribute="trailing" secondItem="DN7-9y-mgZ" secondAttribute="trailing" id="318-st-Fg0"/>
@@ -237,6 +244,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="800"/>
                     <connections>
+                        <outlet property="checkBox" destination="dD1-Mf-MEe" id="CTy-J0-9Dp"/>
                         <outlet property="detailImage" destination="l4u-1d-eSS" id="3YJ-Zt-sCq"/>
                         <outlet property="detailLabel" destination="a19-e3-QuI" id="Tbq-zB-HUM"/>
                         <outlet property="endLabel" destination="Ieb-ve-wvP" id="9nA-xr-Xtq"/>

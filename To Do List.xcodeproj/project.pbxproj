@@ -17,6 +17,7 @@
 		A0505A351D501C8400B44A74 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0505A341D501C8400B44A74 /* AVFoundation.framework */; };
 		A0505A371D5020E600B44A74 /* speaker.png in Resources */ = {isa = PBXBuildFile; fileRef = A0505A361D5020E500B44A74 /* speaker.png */; };
 		A074E6AE1D5D717B00053E84 /* myFinishCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A074E6AD1D5D717B00053E84 /* myFinishCell.swift */; };
+		A0CA15381D71F008008B3196 /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CA15371D71F008008B3196 /* CheckBox.swift */; };
 		A0D4B6B81D69599500575AA7 /* PopOverSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D4B6B71D69599500575AA7 /* PopOverSettingViewController.swift */; };
 		C87EC9341A691C9D00653082 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87EC9331A691C9D00653082 /* AppDelegate.swift */; };
 		C87EC9361A691C9D00653082 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C87EC9351A691C9D00653082 /* FirstViewController.swift */; };
@@ -48,6 +49,7 @@
 		A0505A341D501C8400B44A74 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A0505A361D5020E500B44A74 /* speaker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = speaker.png; sourceTree = "<group>"; };
 		A074E6AD1D5D717B00053E84 /* myFinishCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = myFinishCell.swift; sourceTree = "<group>"; };
+		A0CA15371D71F008008B3196 /* CheckBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		A0D4B6B71D69599500575AA7 /* PopOverSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopOverSettingViewController.swift; sourceTree = "<group>"; };
 		C87EC92E1A691C9D00653082 /* To Do List.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "To Do List.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C87EC9321A691C9D00653082 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				A010C0611D4B70CA00C010FF /* myCell.swift */,
 				A074E6AD1D5D717B00053E84 /* myFinishCell.swift */,
 				C87EC93C1A691C9D00653082 /* Images.xcassets */,
+				A0CA15371D71F008008B3196 /* CheckBox.swift */,
 				C87EC93E1A691C9D00653082 /* LaunchScreen.xib */,
 				C87EC9311A691C9D00653082 /* Supporting Files */,
 			);
@@ -260,6 +263,7 @@
 				A010C0621D4B70CA00C010FF /* myCell.swift in Sources */,
 				A010C0641D4B71D800C010FF /* ToDoItem.swift in Sources */,
 				A0D4B6B81D69599500575AA7 /* PopOverSettingViewController.swift in Sources */,
+				A0CA15381D71F008008B3196 /* CheckBox.swift in Sources */,
 				A00F220A1D5D62BC00F930DA /* ThirdViewController.swift in Sources */,
 				A074E6AE1D5D717B00053E84 /* myFinishCell.swift in Sources */,
 				A0505A311D4ED6FF00B44A74 /* DetailViewController.swift in Sources */,
