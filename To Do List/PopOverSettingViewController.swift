@@ -13,8 +13,9 @@ protocol PopOverSettingViewControllerDelegate: class {
     func didSaveSettings()
 }
 
-class PopOverSettingViewController: UIViewController {
+class PopOverSettingViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
+    @IBOutlet weak var MaleFemalePicer: UIPickerView!
     @IBOutlet weak var valueLabel: UILabel!
     
     @IBOutlet weak var Slider: UISlider!
@@ -24,14 +25,30 @@ class PopOverSettingViewController: UIViewController {
     var speechSettings = NSUserDefaults.standardUserDefaults()
     var rate: Float!
     let valuekey = "rate"
+   // var voice = AVSpeechSynthesisVoice.init(language: "")
+    var currentLanguageCode: String!
     
+    var Array = ["Male","Female"]
+    var PlacementAnswer = 0
     
+    var languageload: String!
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         Slider.value = speechSettings.floatForKey(valuekey)
         valueLabel.text = "\(Slider.value)"
         
+        MaleFemalePicer.delegate = self
+        MaleFemalePicer.dataSource = self
         
+        // Load the value of view picker
+        languageload = NSUserDefaults.standardUserDefaults().stringForKey("code")
+        if languageload == "en-AU" {
+            self.MaleFemalePicer.selectRow(1, inComponent: 0, animated: true)
+        } else if languageload == "en-GB" {
+            self.MaleFemalePicer.selectRow(0, inComponent: 0, animated: true)
+        
+        }
         // Do any additional setup after loading the view.
     }
 
@@ -48,7 +65,26 @@ class PopOverSettingViewController: UIViewController {
     }
     
     @IBAction func saveSettings(sender: AnyObject) {
-        //rate = Slider.value
+        
+        if (PlacementAnswer == 0){
+            currentLanguageCode = "en-GB"
+            //print(currentLanguageCode)
+            //NSUserDefaults.standardUserDefaults().stringForKey(currentLanguageCode)
+        } else
+        {
+            currentLanguageCode = "en-AU"
+            
+            //  NSUserDefaults.standardUserDefaults().stringForKey(currentLanguageCode)
+            
+            //let voice = AVSpeechSynthesisVoice(language: "en-GB")
+            //NSUserDefaults.standardUserDefaults().objectForKey("voice")
+        }
+        
+        NSUserDefaults.standardUserDefaults().setObject(currentLanguageCode, forKey: "code")
+        print(currentLanguageCode)
+        NSUserDefaults.standardUserDefaults().synchronize()
+        delegate.didSaveSettings()
+        rate = Slider.value
         NSUserDefaults.standardUserDefaults().setFloat(rate, forKey: valuekey)
         NSUserDefaults.standardUserDefaults().synchronize()
             delegate.didSaveSettings()
@@ -59,6 +95,26 @@ class PopOverSettingViewController: UIViewController {
         
         
     }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return Array[row]
+    }
+    
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
+        return Array.count
+    }
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+        
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        PlacementAnswer = row
+        
+    }
+    
     /*
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let desViewController = segue.destinationViewController as! DetailViewController

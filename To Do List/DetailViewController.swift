@@ -13,15 +13,36 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
 
     @IBOutlet weak var theSwitch: UISwitch!
     
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var staffLabel: UILabel!
+    
     @IBOutlet weak var detailImage: UIImageView!
+    @IBOutlet weak var locationLabel: UILabel!
+    
+    @IBOutlet weak var startLabel: UILabel!
+    @IBOutlet weak var endLabel: UILabel!
+    @IBOutlet weak var repeatLabel: UILabel!
+    
+    @IBOutlet weak var secondPhoto: UIImageView!
     @IBOutlet weak var detailLabel: UILabel!
     // Display the image and label
+    var titleEvent = ""
+    var staffEvent = ""
     var imageDetail = UIImage()
+    var locationEvent = ""
+    var startEvent = ""
+    var endEvent = ""
+    var repeatEvent = ""
+    var secondPhotoEvent = UIImage()
     var descriptionDetail = ""
     // text to speech 
     
     
     var rate: Float!
+    //var voice: AVSpeechSynthesisVoice!
+    var currentLanguageCode: String!
+    var stringToSpeech: String!
+    
     
     //var pitch: Float!
     //var volume: Float!
@@ -30,12 +51,46 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
     let synth = AVSpeechSynthesizer()
     var myUtterance = AVSpeechUtterance(string: "")
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Do any additional setup after loading the view.
+        titleLabel.text = titleEvent
+        staffLabel.text = staffEvent
+        detailImage.image = imageDetail
+        locationLabel.text = locationEvent
+        startLabel.text = startEvent
+        print(startEvent)
+        endLabel.text = endEvent
+        repeatLabel.text = repeatEvent
+        secondPhoto.image = secondPhotoEvent
+        detailLabel.text = descriptionDetail
+        
+       // stringToSpeech = titleEvent + staffEvent + locationEvent + startEvent + endEvent + repeatEvent + descriptionDetail
+        
+        stringToSpeech = "You have a \(titleEvent) with \(staffEvent) at \(locationEvent) from \(startEvent) to \(endEvent) It will repeat \(repeatEvent) time. Detail about the event would be \(descriptionDetail) "
+        
+        if toDoList.contains({ $0.imageName == imageDetail })
+        {
+            self.theSwitch.on = false
+        }
+        else
+        {
+            self.theSwitch.on = true
+        }
+        if !loadSetting(){
+            registerDefaultVoiceSetting()
+        }
+    }
+    
        
     
     
     @IBAction func onOffSwitch(sender: AnyObject) {
         let photo = detailImage.image
-        let todoItemCreated = ToDoItem(imageName: photo, description: detailLabel.text!)
+        let secondimage = secondPhoto.image
+        let todoItemCreated = ToDoItem(title: titleLabel.text!, staff: staffLabel.text!, location: locationLabel.text!, starts: startLabel.text!, ends: endLabel.text!, rpeat: repeatLabel.text!, imageName: photo, description: detailLabel.text!, secondPhoto: secondimage)
+     //   let todoItemCreated = ToDoItem(imageName: photo, description: detailLabel.text!)
         if theSwitch.on
         {
             finishList.append(todoItemCreated)
@@ -49,15 +104,19 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
             finishList.removeAtIndex(index!)
         }
     }
+ 
     func registerDefaultVoiceSetting(){
+        
         rate = AVSpeechUtteranceDefaultSpeechRate
         let defaultSpeechSetting: NSDictionary = ["rate": rate]
         NSUserDefaults.standardUserDefaults().registerDefaults(defaultSpeechSetting as! [String : AnyObject])
     }
     
+ 
     @IBAction func textToSpech(sender: AnyObject) {
-        myUtterance = AVSpeechUtterance(string: detailLabel.text!)
-        let voice = AVSpeechSynthesisVoice(language: "en-AU")
+        myUtterance = AVSpeechUtterance(string: stringToSpeech)
+        let voice = AVSpeechSynthesisVoice(language: currentLanguageCode)
+      //  print(currentLanguageCode)
         myUtterance.voice = voice
         myUtterance.rate = rate
         print(rate)
@@ -66,18 +125,7 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
         synth.speakUtterance(myUtterance)
     }
   
-    @IBAction func textToSpeechMaleVoice(sender: AnyObject) {
-        myUtterance = AVSpeechUtterance(string: detailLabel.text!)
-        let voice = AVSpeechSynthesisVoice(language: "en-GB")
-        myUtterance.voice = voice
-        let voices = AVSpeechSynthesisVoice.speechVoices()
-        print(voices)
-        
-        myUtterance.rate = rate
-        //myUtterance.pitchMultiplier = 0.3
-        //myUtterance.volume = 0.3
-        synth.speakUtterance(myUtterance)
-    }
+    
   
     func loadSetting() -> Bool {
         let userDefaults = NSUserDefaults.standardUserDefaults() as NSUserDefaults
@@ -92,27 +140,7 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
         return false
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        detailImage.image = imageDetail
-        detailLabel.text = descriptionDetail
-        
-        
-        
-        if toDoList.contains({ $0.imageName == imageDetail })
-        {
-            self.theSwitch.on = false
-        }
-        else
-        {
-            self.theSwitch.on = true
-        }
-        if !loadSetting(){
-            registerDefaultVoiceSetting()
-        }
-    }
+   
     
     //popover
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -142,8 +170,10 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
         let settings = NSUserDefaults.standardUserDefaults() as NSUserDefaults!
         rate = settings.floatForKey("rate")
         
+        let voiceSetting = NSUserDefaults.standardUserDefaults() as NSUserDefaults!
         
-        
+        currentLanguageCode = voiceSetting.stringForKey("code")
+        //print(currentLanguageCode)
         
     }
     

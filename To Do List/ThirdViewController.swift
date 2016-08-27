@@ -65,8 +65,14 @@ class ThirdViewController: UIViewController, UITableViewDelegate {
         
         let itemSelected = finishList[indexPath.row]
         let detailVC:DetailViewController = self.storyboard?.instantiateViewControllerWithIdentifier("DetailViewController") as! DetailViewController
+        detailVC.titleEvent = itemSelected.title
+        detailVC.staffEvent = itemSelected.staff
         detailVC.imageDetail = itemSelected.imageName!
-        detailVC.descriptionDetail = itemSelected.description
+        detailVC.locationEvent = itemSelected.location
+        detailVC.startEvent = itemSelected.starts
+        detailVC.endEvent = itemSelected.ends
+        detailVC.repeatEvent = itemSelected.rpeat
+        detailVC.secondPhotoEvent = itemSelected.secondPhoto!
         
         self.presentViewController(detailVC, animated: true, completion: nil)
         
