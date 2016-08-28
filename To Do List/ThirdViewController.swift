@@ -75,7 +75,8 @@ class ThirdViewController: UIViewController, UITableViewDelegate {
         detailVC.endEvent = itemSelected.ends
         detailVC.repeatEvent = itemSelected.rpeat
         detailVC.secondPhotoEvent = itemSelected.secondPhoto!
-        
+       
+        detailVC.descriptionDetail = itemSelected.description
         self.presentViewController(detailVC, animated: true, completion: nil)
         
     }

@@ -13,6 +13,7 @@ var toDoList:[ToDoItem] = [ToDoItem]()
 class FirstViewController: UIViewController, UITableViewDelegate {
     
     
+
     var arraykey: String!
     
     @IBOutlet var toDoListTable: UITableView!
@@ -80,8 +81,10 @@ class FirstViewController: UIViewController, UITableViewDelegate {
         toDoListTable.reloadData()
         
     }
+   
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+       
         let itemSelected = toDoList[indexPath.row]
         let detailVC:DetailViewController = self.storyboard?.instantiateViewControllerWithIdentifier("DetailViewController") as! DetailViewController
         detailVC.titleEvent = itemSelected.title
@@ -97,9 +100,9 @@ class FirstViewController: UIViewController, UITableViewDelegate {
         detailVC.descriptionDetail = itemSelected.description
         
         self.presentViewController(detailVC, animated: true, completion: nil)
+      //  self.performSegueWithIdentifier("showDetail", sender: self)
         
     }
- 
     
 
 }
