@@ -12,7 +12,7 @@ import AVFoundation
 class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPopoverPresentationControllerDelegate, PopOverSettingViewControllerDelegate {
 
     @IBOutlet weak var checkBox: CheckBox!
-    @IBOutlet weak var theSwitch: UISwitch!
+    
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var staffLabel: UILabel!
@@ -61,7 +61,6 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
         detailImage.image = imageDetail
         locationLabel.text = locationEvent
         startLabel.text = startEvent
-        print(startEvent)
         endLabel.text = endEvent
         repeatLabel.text = repeatEvent
         secondPhoto.image = secondPhotoEvent
@@ -71,14 +70,7 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
         
         stringToSpeech = "You have a \(titleEvent) with \(staffEvent) at \(locationEvent) from \(startEvent) to \(endEvent) It will repeat \(repeatEvent) time. Detail about the event would be \(descriptionDetail) "
         
-        if toDoList.contains({ $0.imageName == imageDetail })
-        {
-            self.theSwitch.on = false
-        }
-        else
-        {
-            self.theSwitch.on = true
-        }
+       
         
         if toDoList.contains({ $0.imageName == imageDetail}) {
             self.checkBox.isChecked = false
@@ -99,7 +91,7 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
         let photo = detailImage.image
         let secondimage = secondPhoto.image
         let todoItemCreated = ToDoItem(title: titleLabel.text!, staff: staffLabel.text!, location: locationLabel.text!, starts: startLabel.text!, ends: endLabel.text!, rpeat: repeatLabel.text!, imageName: photo, description: detailLabel.text!, secondPhoto: secondimage)
-        //   let todoItemCreated = ToDoItem(imageName: photo, description: detailLabel.text!)
+        
         print(todoItemCreated.description)
         if checkBox.isChecked == false {
             finishList.append(todoItemCreated)
@@ -115,25 +107,7 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
     
     
     
-    @IBAction func onOffSwitch(sender: AnyObject) {
-        let photo = detailImage.image
-        let secondimage = secondPhoto.image
-        let todoItemCreated = ToDoItem(title: titleLabel.text!, staff: staffLabel.text!, location: locationLabel.text!, starts: startLabel.text!, ends: endLabel.text!, rpeat: repeatLabel.text!, imageName: photo, description: detailLabel.text!, secondPhoto: secondimage)
-     //   let todoItemCreated = ToDoItem(imageName: photo, description: detailLabel.text!)
-        print(todoItemCreated.description)
-        if theSwitch.on
-        {
-            finishList.append(todoItemCreated)
-            let index = toDoList.indexOf({ $0.imageName == photo })
-            toDoList.removeAtIndex(index!)
-        }
-        else
-        {
-            toDoList.append(todoItemCreated)
-            let index = finishList.indexOf({ $0.imageName == photo })
-            finishList.removeAtIndex(index!)
-        }
-    }
+  
  
     func registerDefaultVoiceSetting(){
         

@@ -42,13 +42,18 @@ class PopOverSettingViewController: UIViewController, UIPickerViewDelegate, UIPi
         MaleFemalePicer.dataSource = self
         
         // Load the value of view picker
-        languageload = NSUserDefaults.standardUserDefaults().stringForKey("code")
+        languageload = speechSettings.stringForKey("code")
+        if (languageload == nil) || (languageload == "en-GB") {
+            languageload = "en-GB"
+            self.MaleFemalePicer.selectRow(0, inComponent: 0, animated: true)
+        } else
         if languageload == "en-AU" {
             self.MaleFemalePicer.selectRow(1, inComponent: 0, animated: true)
-        } else if languageload == "en-GB" {
-            self.MaleFemalePicer.selectRow(0, inComponent: 0, animated: true)
-        
         }
+        //else if languageload == "en-GB" {
+          //  self.MaleFemalePicer.selectRow(0, inComponent: 0, animated: true)
+        
+        //}
         // Do any additional setup after loading the view.
     }
 
@@ -81,7 +86,6 @@ class PopOverSettingViewController: UIViewController, UIPickerViewDelegate, UIPi
         }
         
         NSUserDefaults.standardUserDefaults().setObject(currentLanguageCode, forKey: "code")
-        print(currentLanguageCode)
         NSUserDefaults.standardUserDefaults().synchronize()
         delegate.didSaveSettings()
         rate = Slider.value

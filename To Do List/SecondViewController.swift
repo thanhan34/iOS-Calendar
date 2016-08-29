@@ -33,6 +33,7 @@ class SecondViewController: UIViewController, UITextFieldDelegate, UINavigationC
         self.startDate.delegate = self
         self.endDate.delegate = self
         importedImage.image = UIImage(named: "images.jpg")
+        secondPhoto.image = UIImage(named: "images.ipg")
         
         ScrollView.contentSize.height = 600
         
@@ -72,8 +73,6 @@ class SecondViewController: UIViewController, UITextFieldDelegate, UINavigationC
         else {
             secondPhoto.image = image
         }
-       // imageInput.image = image
-       // secondPhoto.image = image
     }
     
     // MARK: - Action Sheet
@@ -88,7 +87,6 @@ class SecondViewController: UIViewController, UITextFieldDelegate, UINavigationC
         let libButton = UIAlertAction(title: "Select from photo library", style: .Default, handler: { (libButton) -> Void in
             image.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
             image.allowsEditing = false
-          //  self.imageInput = self.importedImage
             self.presentViewController(image, animated: true, completion: nil)
         
         })
@@ -122,7 +120,6 @@ class SecondViewController: UIViewController, UITextFieldDelegate, UINavigationC
         let libButton = UIAlertAction(title: "Select from photo library", style: .Default, handler: { (libButton) -> Void in
             image1.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
             image1.allowsEditing = false
-          //  self.imageInput = self.secondPhoto
             self.presentViewController(image1, animated: true, completion: nil)
             
         })
@@ -150,20 +147,20 @@ class SecondViewController: UIViewController, UITextFieldDelegate, UINavigationC
     
     @IBAction func addEvent(sender: AnyObject) {
         
-        //(title: String,staff:String, location: String,starts: String, ends: String, rpeat: String, imageName: UIImage?, description: String, secondPhoto: UIImage?)
+        
         
         let photo = importedImage.image
+      //  let second = secondPhoto.image
+        let photo2 = secondPhoto.image
         
-        let todoItemCreated = ToDoItem(title: titletextField.text!, staff: staffTextField.text!, location: locationTextField.text!, starts: startDate.text!, ends: endDate.text!, rpeat: repeatTextField.text!, imageName: photo, description: item.text!, secondPhoto: photo)
-        //let todoItemCreated = ToDoItem(imageName: photo, description: item.text!)
-            
-         //   imageName: photo, description: item.text!)
-        print(todoItemCreated.starts)
+        let todoItemCreated = ToDoItem(title: titletextField.text!, staff: staffTextField.text!, location: locationTextField.text!, starts: startDate.text!, ends: endDate.text!, rpeat: repeatTextField.text!, imageName: photo, description: item.text!, secondPhoto: photo2)
+       
         toDoList.append(todoItemCreated)
         print("finish added")
         
         item.text = ""
         importedImage.image = UIImage(named: "images.jpg")
+        self.view.endEditing(true)
         // NSUserDefaults.standardUserDefaults().setObject(toDoList, forKey: "toDoList")
         //NSUserDefaults.standardUserDefaults().setObject(toDoList, forKey: "arraytodolist")
         
