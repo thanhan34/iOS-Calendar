@@ -8,22 +8,21 @@
 
 import UIKit
 import AVFoundation
+import FirebaseStorage
+import Firebase
+import FirebaseAuth
+import FirebaseDatabase
 
-class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPopoverPresentationControllerDelegate, PopOverSettingViewControllerDelegate {
+class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate {
 
     @IBOutlet weak var checkBox: CheckBox!
-    
-    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var staffLabel: UILabel!
-    
     @IBOutlet weak var detailImage: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
-    
     @IBOutlet weak var startLabel: UILabel!
     @IBOutlet weak var endLabel: UILabel!
     @IBOutlet weak var repeatLabel: UILabel!
-    
     @IBOutlet weak var secondPhoto: UIImageView!
     @IBOutlet weak var detailLabel: UILabel!
     // Display the image and label
@@ -36,78 +35,258 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
     var repeatEvent = ""
     var secondPhotoEvent = UIImage()
     var descriptionDetail = ""
+    var key = ""
+    var isFinishFromDetail: Bool = false
+    var eventIDfromDetail = ""
     // text to speech 
     
     
     var rate: Float!
-    //var voice: AVSpeechSynthesisVoice!
-    var currentLanguageCode: String!
+    
+    var fontsize = NSUserDefaults.standardUserDefaults().floatForKey("fontsize")
+    var currentLanguageCode = NSUserDefaults.standardUserDefaults().stringForKey("code")
     var stringToSpeech: String!
     
+    var databaseRef: FIRDatabaseReference! {
+        return FIRDatabase.database().reference()
+    }
+    var storageRef: FIRStorageReference! {
+        return FIRStorage.storage().reference()
+    }
     
-    //var pitch: Float!
-    //var volume: Float!
+    
     
     //text to spech
     let synth = AVSpeechSynthesizer()
     var myUtterance = AVSpeechUtterance(string: "")
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print(fontsize)
+        let cgfloatfontsize = CGFloat(fontsize)
         // Do any additional setup after loading the view.
+        
         titleLabel.text = titleEvent
+        titleLabel.font = titleLabel.font.fontWithSize(cgfloatfontsize)
+        titleLabel.sizeToFit()
+        //titleLabel.textColor = UIColor.whiteColor()
+        
         staffLabel.text = staffEvent
+        staffLabel.font = staffLabel.font.fontWithSize(cgfloatfontsize)
+        staffLabel.sizeToFit()
+        //staffLabel.textColor = UIColor.whiteColor()
+        
         detailImage.image = imageDetail
+        
+        
         locationLabel.text = locationEvent
+        locationLabel.font = locationLabel.font.fontWithSize(cgfloatfontsize)
+        locationLabel.sizeToFit()
+        //locationLabel.textColor = UIColor.whiteColor()
+        
         startLabel.text = startEvent
+        startLabel.font = startLabel.font.fontWithSize(cgfloatfontsize)
+        startLabel.sizeToFit()
+        //startLabel.textColor = UIColor.whiteColor()
+        
         endLabel.text = endEvent
+        endLabel.font = endLabel.font.fontWithSize(cgfloatfontsize)
+        endLabel.sizeToFit()
+        //endLabel.textColor = UIColor.whiteColor()
+        
         repeatLabel.text = repeatEvent
+        repeatLabel.font = repeatLabel.font.fontWithSize(cgfloatfontsize)
+        repeatLabel.sizeToFit()
+        //repeatLabel.textColor = UIColor.whiteColor()
+        
         secondPhoto.image = secondPhotoEvent
+        
         detailLabel.text = descriptionDetail
+        detailLabel.font = detailLabel.font.fontWithSize(cgfloatfontsize)
+        detailLabel.sizeToFit()
+        //detailLabel.textColor = UIColor.whiteColor()
         
-       // stringToSpeech = titleEvent + staffEvent + locationEvent + startEvent + endEvent + repeatEvent + descriptionDetail
+        checkBox.isChecked = isFinishFromDetail
+      
         
-        stringToSpeech = "You have a \(titleEvent) with \(staffEvent) at \(locationEvent) from \(startEvent) to \(endEvent) It will repeat \(repeatEvent) time. Detail about the event would be \(descriptionDetail) "
         
-       
+        let speechStringBuilder: [String: String] = [
+            "title" : titleEvent,
+            "staff" : staffEvent,
+            "location" : locationEvent,
+            "start" : startEvent,
+            "end" : endEvent,
+            "repeat" : repeatEvent,
+            "description" : descriptionDetail
+        ]
         
-        if toDoList.contains({ $0.imageName == imageDetail}) {
-            self.checkBox.isChecked = false
-        } else {
-            self.checkBox.isChecked = true
+        if let titleString = speechStringBuilder["title"] {
+            if titleString != "" {
+                stringToSpeech = "You have a \(titleString) "
+            }
+            else {
+                stringToSpeech = " "
+            }
         }
-        
-        
-        
-        
+        if let staffString = speechStringBuilder["staff"] {
+            if staffString != "" {
+                stringToSpeech = stringToSpeech + "with \(staffString) "
+            }
+            else {
+                stringToSpeech = stringToSpeech + " "
+            }
+        }
+        if let locationString = speechStringBuilder["location"] {
+            if locationString != "" {
+                stringToSpeech = stringToSpeech + "at \(locationString)"
+            }
+            else {
+                stringToSpeech = stringToSpeech + " "
+            }
+        }
+        if let startString = speechStringBuilder["start"] {
+            if startString != "" {
+                stringToSpeech = stringToSpeech + "from \(startString) "
+            }
+            else {
+                stringToSpeech = stringToSpeech + " "
+            }
+        }
+        if let endString = speechStringBuilder["end"] {
+            if endString != "" {
+                stringToSpeech = stringToSpeech + "to \(endString) "
+            }
+            else {
+                stringToSpeech = stringToSpeech + " "
+            }
+        }
+        if let repeatString = speechStringBuilder["repeat"] {
+            if repeatString != "" {
+                stringToSpeech = stringToSpeech + "It would be \(repeatString) time."
+            }
+            else {
+                stringToSpeech = stringToSpeech + " "
+            }
+        }
+        if let descriptionString = speechStringBuilder["description"] {
+            if descriptionString != "" {
+                stringToSpeech = stringToSpeech + "Detail about the event would be \(descriptionString)."
+            }
+            else {
+                stringToSpeech = stringToSpeech + " "
+            }
+        }
+       
         if !loadSetting(){
             registerDefaultVoiceSetting()
         }
     }
     
-       
     @IBAction func checkBox(sender: AnyObject) {
-        let photo = detailImage.image
-        let secondimage = secondPhoto.image
-        let todoItemCreated = ToDoItem(title: titleLabel.text!, staff: staffLabel.text!, location: locationLabel.text!, starts: startLabel.text!, ends: endLabel.text!, rpeat: repeatLabel.text!, imageName: photo, description: detailLabel.text!, secondPhoto: secondimage)
+        let data = UIImageJPEGRepresentation(self.imageDetail, 0.4)
+        let data1 = UIImageJPEGRepresentation(self.secondPhotoEvent, 0.4)
         
-        print(todoItemCreated.description)
+        let metadata = FIRStorageMetadata()
+        metadata.contentType = "image/jpeg"
+        
+        let metadata1 = FIRStorageMetadata()
+        metadata1.contentType = "image/jpeg"
+       
+        let imagePath = "postImages/\(eventIDfromDetail)/postPic1.jpg"
+        let imagePath1 = "postImages/\(eventIDfromDetail)/postPic2.jpg"
+        var isCompleted: Bool = false
+        
+        
         if checkBox.isChecked == false {
-            finishList.append(todoItemCreated)
-            let index = toDoList.indexOf({ $0.imageName == photo })
-            toDoList.removeAtIndex(index!)
-        } else {
-            toDoList.append(todoItemCreated)
-            let index = finishList.indexOf({ $0.imageName == photo })
-            finishList.removeAtIndex(index!)
+            isCompleted = true
+            storageRef.child(imagePath).putData(data!, metadata: metadata)
+            { (metadata, error) in
+                if error == nil
+                {
+                    self.storageRef.child(imagePath1).putData(data1!, metadata: metadata1)
+                    { (metadata1, error1) in
+                        if error1 == nil
+                        {
+                            let updateRef = self.databaseRef.child("/posts/\(self.key)")
+                            let updateevent = TodoItemDatabase(username: FIRAuth.auth()!.currentUser!.displayName!,
+                                                               eventID: self.eventIDfromDetail,
+                                                               title: self.titleEvent,
+                                                               staff: self.staffEvent,
+                                                               location: self.locationEvent,
+                                                               starts: self.startEvent,
+                                                               ends: self.endEvent,
+                                                               rpeat: self.repeatEvent,
+                                                               imageName: String(metadata!.downloadURL()!),
+                                                               description: self.descriptionDetail,
+                                                               secondPhoto: String(metadata1!.downloadURL()!),
+                                                               isCompleted: isCompleted)
+                            updateRef.updateChildValues(updateevent.toAnyObject())
+                            
+                            
+                            
+                        }//end if 2
+                        else
+                        {
+                            print(error1!.localizedDescription)
+                        }//end else
+                    }// end metadata 2
+                    
+                }//end if 1
+                else
+                {
+                    print(error!.localizedDescription)
+                }
+            }
         }
+            else {
+            isCompleted = false
+            storageRef.child(imagePath).putData(data!, metadata: metadata)
+            { (metadata, error) in
+                if error == nil
+                {
+                    self.storageRef.child(imagePath1).putData(data1!, metadata: metadata1)
+                    { (metadata1, error1) in
+                        if error1 == nil
+                        {
+                            let updateRef = self.databaseRef.child("/posts/\(self.key)")
+                            let updateevent = TodoItemDatabase(username: FIRAuth.auth()!.currentUser!.displayName!,
+                                                               eventID: self.eventIDfromDetail,
+                                                               title: self.titleEvent,
+                                                               staff: self.staffEvent,
+                                                               location: self.locationEvent,
+                                                               starts: self.startEvent,
+                                                               ends: self.endEvent,
+                                                               rpeat: self.repeatEvent,
+                                                               imageName: String(metadata!.downloadURL()!),
+                                                               description: self.descriptionDetail,
+                                                               secondPhoto: String(metadata1!.downloadURL()!),
+                                                               isCompleted: isCompleted)
+                            updateRef.updateChildValues(updateevent.toAnyObject())
+                            
+                            
+                            
+                        }//end if 2
+                        else
+                        {
+                            print(error1!.localizedDescription)
+                        }//end else
+                    }// end metadata 2
+                    
+                }//end if 1
+                else
+                {
+                    print(error!.localizedDescription)
+                }
+            }
+            
+        }
+       
+        
         
     }
     
-    
-    
-  
  
     func registerDefaultVoiceSetting(){
         
@@ -120,26 +299,19 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
     @IBAction func textToSpech(sender: AnyObject) {
         myUtterance = AVSpeechUtterance(string: stringToSpeech)
         let voice = AVSpeechSynthesisVoice(language: currentLanguageCode)
-      //  print(currentLanguageCode)
         myUtterance.voice = voice
         myUtterance.rate = rate
-        print(rate)
-       // myUtterance.pitchMultiplier = 0.3
-       // myUtterance.volume = 0.3
         synth.speakUtterance(myUtterance)
     }
   
-    
   
     func loadSetting() -> Bool {
         let userDefaults = NSUserDefaults.standardUserDefaults() as NSUserDefaults
         if let theRate: Float = userDefaults.valueForKey("rate") as? Float {
             rate = theRate
-            print(rate)
            // pitch = userDefaults.valueForKey("pitch") as! Float
            // volume = userDefaults.valueForKey("volume") as! Float
             return true
-            
         }
         return false
     }
@@ -149,22 +321,24 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
     //popover
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        if segue.identifier == "showPopover"
+        if segue.identifier == "updateEvent"
         {
-            let popoverViewController = segue.destinationViewController
-            popoverViewController.popoverPresentationController?.delegate = self
-            let settingsViewController = segue.destinationViewController as! PopOverSettingViewController
-            settingsViewController.delegate = self
+            let svc: UpdateEventViewController = segue.destinationViewController as! UpdateEventViewController
+            svc.updatetitleEvent = titleLabel.text!
+            svc.updatestaffEvent = staffLabel.text!
+            svc.updateimageDetail = detailImage.image!
+            svc.updatelocationEvent = locationLabel.text!
+            svc.updatestartEvent = startLabel.text!
+            svc.updateendEvent = endLabel.text!
+            svc.updaterepeatEvent = repeatLabel.text!
+            svc.updatesecondPhotoEvent = secondPhoto.image!
+            svc.updatedescriptionDetail = detailLabel.text!
+            svc.updatekeyEvent = key
+            svc.isFinishFromUpdate = isFinishFromDetail
+            svc.updateEventID = eventIDfromDetail
         }
-        
-        
-        
     }
     
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        
-        return UIModalPresentationStyle.None
-    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -173,24 +347,10 @@ class DetailViewController: UIViewController, AVSpeechSynthesizerDelegate, UIPop
     func didSaveSettings() {
         let settings = NSUserDefaults.standardUserDefaults() as NSUserDefaults!
         rate = settings.floatForKey("rate")
-        
         let voiceSetting = NSUserDefaults.standardUserDefaults() as NSUserDefaults!
-        
         currentLanguageCode = voiceSetting.stringForKey("code")
-        //print(currentLanguageCode)
-        
+       
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+   
 }
 

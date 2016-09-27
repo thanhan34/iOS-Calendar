@@ -10,6 +10,8 @@ import UIKit
 
 class myFinishCell: UITableViewCell {
 
+    @IBOutlet weak var speaker: UIButton!
+    @IBOutlet weak var checkbox: CheckBox!
     @IBOutlet weak var myFinishImageView: UIImageView!
     @IBOutlet weak var myFinishLabel: UILabel!
     override func awakeFromNib() {

@@ -16,6 +16,7 @@ protocol PopOverSettingViewControllerDelegate: class {
 class PopOverSettingViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet weak var MaleFemalePicer: UIPickerView!
+    @IBOutlet weak var FontSizePicker: UIPickerView!
     @IBOutlet weak var valueLabel: UILabel!
     
     @IBOutlet weak var Slider: UISlider!
@@ -25,11 +26,12 @@ class PopOverSettingViewController: UIViewController, UIPickerViewDelegate, UIPi
     var speechSettings = NSUserDefaults.standardUserDefaults()
     var rate: Float!
     let valuekey = "rate"
-   // var voice = AVSpeechSynthesisVoice.init(language: "")
     var currentLanguageCode: String!
-    
+    var fontsettingvalue: Float!
+    var FontSize = ["Large","Medium","Small"]
     var Array = ["Male","Female"]
     var PlacementAnswer = 0
+    var FontSizeValue = 0
     
     var languageload: String!
    
@@ -41,6 +43,9 @@ class PopOverSettingViewController: UIViewController, UIPickerViewDelegate, UIPi
         MaleFemalePicer.delegate = self
         MaleFemalePicer.dataSource = self
         
+        FontSizePicker.delegate = self
+        FontSizePicker.dataSource = self
+        
         // Load the value of view picker
         languageload = speechSettings.stringForKey("code")
         if (languageload == nil) || (languageload == "en-GB") {
@@ -50,11 +55,6 @@ class PopOverSettingViewController: UIViewController, UIPickerViewDelegate, UIPi
         if languageload == "en-AU" {
             self.MaleFemalePicer.selectRow(1, inComponent: 0, animated: true)
         }
-        //else if languageload == "en-GB" {
-          //  self.MaleFemalePicer.selectRow(0, inComponent: 0, animated: true)
-        
-        //}
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,25 +65,28 @@ class PopOverSettingViewController: UIViewController, UIPickerViewDelegate, UIPi
     @IBAction func RateSlider(sender: AnyObject) {
         valueLabel.text = "\(Slider.value)"
         rate = Slider.value
-        //NSUserDefaults.standardUserDefaults().valueForKey("rate")
-        //NSUserDefaults.standardUserDefaults().synchronize()
     }
     
     @IBAction func saveSettings(sender: AnyObject) {
         
         if (PlacementAnswer == 0){
             currentLanguageCode = "en-GB"
-            //print(currentLanguageCode)
-            //NSUserDefaults.standardUserDefaults().stringForKey(currentLanguageCode)
         } else
         {
             currentLanguageCode = "en-AU"
-            
-            //  NSUserDefaults.standardUserDefaults().stringForKey(currentLanguageCode)
-            
-            //let voice = AVSpeechSynthesisVoice(language: "en-GB")
-            //NSUserDefaults.standardUserDefaults().objectForKey("voice")
         }
+        
+        if (FontSizeValue == 0) {
+            fontsettingvalue = 30
+        }
+        else if (FontSizeValue == 1) {
+            fontsettingvalue = 25
+        }
+        else {
+            fontsettingvalue = 20
+        }
+        NSUserDefaults.standardUserDefaults().setFloat(fontsettingvalue, forKey: "fontsize")
+        NSUserDefaults.standardUserDefaults().synchronize()
         
         NSUserDefaults.standardUserDefaults().setObject(currentLanguageCode, forKey: "code")
         NSUserDefaults.standardUserDefaults().synchronize()
@@ -101,12 +104,23 @@ class PopOverSettingViewController: UIViewController, UIPickerViewDelegate, UIPi
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if (pickerView.tag == 1) {
+        
+        
         return Array[row]
+        }
+        else {
+        return FontSize[row]
+        }
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        
-        return Array.count
+        if (pickerView.tag == 1){
+            return Array.count
+        }
+        else {
+            return FontSize.count
+        }
     }
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
@@ -115,35 +129,15 @@ class PopOverSettingViewController: UIViewController, UIPickerViewDelegate, UIPi
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
-        PlacementAnswer = row
+        if (pickerView.tag == 1){
+            PlacementAnswer = row
+        } else {
+            FontSizeValue = row
+        }
         
     }
     
-    /*
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let desViewController = segue.destinationViewController as! DetailViewController
-        desViewController.delegate = self
-       // voicerateSettingController.rate = self.Slider.value
-        
-        
-        
-        //voicerateSettingController.delegate = self
-        
-    }*/
-    /*func didSaveSetting(){
-        let settings = NSUserDefaults.standardUserDefaults() as NSUserDefaults!
-        rate = settings.valueForKey("rate") as! Float
-        
-    }*/
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
+    
 
 }

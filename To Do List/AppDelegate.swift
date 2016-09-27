@@ -7,6 +7,11 @@
 //
 
 import UIKit
+import Firebase
+import FBSDKLoginKit
+import FirebaseAuth
+
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,7 +21,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        application.statusBarStyle = .LightContent
+        FIRApp.configure()
+        //FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        FIRDatabase.database().persistenceEnabled = true
+        logUser()
         return true
+    }
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        let handled = FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+        // Add any custom logic here.
+        return handled
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -35,12 +50,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
+        FBSDKAppEvents.activateApp()
     }
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
+    func logUser(){
+        if FIRAuth.auth()?.currentUser != nil {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let home = storyboard.instantiateViewControllerWithIdentifier("EventTabbar")
+            self.window?.rootViewController = home
+            
+        }
+    }
 
 }
 

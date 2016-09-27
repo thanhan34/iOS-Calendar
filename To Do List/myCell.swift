@@ -10,6 +10,8 @@ import UIKit
 
 class myCell: UITableViewCell {
 
+    @IBOutlet weak var checkbox: CheckBox!
+    @IBOutlet weak var speaker: UIButton!
     @IBOutlet weak var myImageView: UIImageView!
     @IBOutlet weak var myLabel: UILabel!
     override func awakeFromNib() {

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>292215795177-nah3k8m3nmcf1givf9p6atimahqn1a5a.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.292215795177-nah3k8m3nmcf1givf9p6atimahqn1a5a</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBPfLLXlsAxm2AHP_74o2gV0fN4dZ_jod8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>292215795177</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.qut.ios-calendar</string>
+	<key>PROJECT_ID</key>
+	<string>ios-photo-calendar</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ios-photo-calendar.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:292215795177:ios:178701b0e5f37d61</string>
+	<key>DATABASE_URL</key>
+	<string>https://ios-photo-calendar.firebaseio.com</string>
+</dict>
+</plist>
